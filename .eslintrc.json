@@ -1,4 +1,9 @@
 {
+    "settings": {
+        "react": {
+            "version": "detect"
+        }
+    },
     "env": {
         "browser": true,
         "es2021": true
@@ -7,16 +12,16 @@
         "plugin:react/recommended",
         "standard-with-typescript"
     ],
-    "overrides": [
-    ],
+    "overrides": [],
     "parserOptions": {
         "ecmaVersion": "latest",
         "sourceType": "module",
-        "project": ["tsconfig.json"]
+        "project": [
+            "tsconfig.json"
+        ]
     },
     "plugins": [
         "react"
     ],
-    "rules": {
-    }
+    "rules": {}
 }
