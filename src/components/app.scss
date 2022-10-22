@@ -1,0 +1,9 @@
+$color: white;
+
+h1 {
+    color: $color;
+    text-align: left;
+    span {
+        text-decoration: underline;
+    }
+}
