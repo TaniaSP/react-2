@@ -1,4 +1,7 @@
-export interface User {
+export interface MovieTile {
+  id: number
   name: string
-  age: number
+  release_year: number
+  genre: string
+  img: string
 }

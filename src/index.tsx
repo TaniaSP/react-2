@@ -1,10 +1,8 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
-import App from './components/App'
+import { createRoot } from 'react-dom/client'
 import './index.scss'
-import { User } from './models/interfaces'
+import HomePage from './pages/HomePage'
 
-const user: User = {
-  name: 'Tania', age: 30
-}
-ReactDOM.render(<App user={user} />, document.getElementById('root'))
+const container = document.getElementById('root')
+const root = createRoot(container as HTMLElement)
+root.render(<HomePage />)
