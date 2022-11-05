@@ -47,3 +47,12 @@ export const mockedMovies: MovieTile[] = [
     img: 'reservoirdogs.jpg'
   }
 ]
+
+export const EmptyMovie: MovieTile = {
+  id: 0,
+  name: '',
+  release_year: 0,
+  genre: '',
+  img: ''
+
+}
