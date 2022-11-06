@@ -55,4 +55,4 @@ export default function HomePage (): ReactElement {
         </div>)
 };
 
-//example for ana
+// example for anahi
