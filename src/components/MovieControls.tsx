@@ -39,5 +39,5 @@ MovieContros.defaultProps = {
   count: 0, genres: []
 }
 MovieContros.propTypes = {
-  count: PropTypes.number, genres: PropTypes.arrayOf(PropTypes.string)
+  count: PropTypes.number.isRequired, genres: PropTypes.arrayOf(PropTypes.string).isRequired
 }
