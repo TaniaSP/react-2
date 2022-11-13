@@ -10,24 +10,18 @@ import header_bg from '../assets/header_bg.png'
 import { MovieTile } from '../models/interfaces'
 import DeleteMovie from '../components/DeleteMovie'
 import EditMovie from '../components/EditMovie'
+import SelectedMovie from '../components/SelectedMovie'
+import { sortBy } from '../models/utils'
+
+const movieContext = React.createContext<any>(null)
 
 export default function HomePage (): ReactElement {
-  const sortBy = (data: MovieTile[]): MovieTile[] => {
-    return data.sort((a, b) => {
-      if (a.release_year > b.release_year) {
-        return 1
-      }
-      if (a.release_year < b.release_year) {
-        return -1
-      }
-      return 0
-    })
-  }
   const [movies, setMovies] = useState(sortBy(mockedMovies))
   const [openConfirmBox, setOpenConfirmBox] = useState(false)
   const [openEditBox, setOpenEditBox] = useState(false)
   const [isEditMovie, setIsEditMovie] = useState(false)
   const [selectedMovie, setSelectedMovie] = useState(EmptyMovie)
+  const [clickMovie, setClickedMovie] = useState<MovieTile | null>(null)
   const onSearch = (value: string): void => {
     const filtered = mockedMovies
       .filter(x => x.name.toLowerCase().includes(value.toLowerCase()))
@@ -66,22 +60,28 @@ export default function HomePage (): ReactElement {
     setSelectedMovie(EmptyMovie)
     setIsEditMovie(false)
   }
-
+  const movieClick = (movie: MovieTile): void => {
+    setClickedMovie(movie)
+  }
   return (
     <div className='main'>
-      {openConfirmBox && <DeleteMovie onConfirm={onConfirm} onClose={onClose} />}
-      {openEditBox && <EditMovie movie={selectedMovie} isEdit={isEditMovie} onSubmit={onClose} onClose={onClose} />}
-      <div className="top-content" style={{ backgroundImage: `url('${(header_bg as string)}')` }}>
-        <Header onAddMovie={addMovie} />
-        <ErrorBoundary>
-          <Search onSearch={onSearch} />
-        </ErrorBoundary>
-      </div>
+      <movieContext.Provider value={{ clickMovie, setClickedMovie }}>
+        {openConfirmBox && <DeleteMovie onConfirm={onConfirm} onClose={onClose} />}
+        {openEditBox && <EditMovie movie={selectedMovie} isEdit={isEditMovie} onSubmit={onClose} onClose={onClose} />}
+        <div className={(clickMovie != null) ? 'selected-movie top-content' : 'top-content'} style={{ backgroundImage: (clickMovie != null) ? '' : `url('${(header_bg as string)}')` }}>
+          <Header onAddMovie={addMovie} />
+          <ErrorBoundary>
+            {(clickMovie != null)
+              ? <SelectedMovie movie={clickMovie} />
+              : <Search onSearch={onSearch} />}
+          </ErrorBoundary>
+        </div>
+      </movieContext.Provider>
       <div className="main-content">
         <MovieControls count={movies.length} genres={genres} onGenreSelected={onGenreSelected} />
         <div className='movie-tiles'>
           {
-            movies.map(movie => <ErrorBoundary key={movie.id} ><Movie key={movie.id} movie={movie} editMovie={() => editMovie(movie)} deleteMovie={() => deleteMovie(movie)} /></ErrorBoundary>)
+            movies.map(movie => <ErrorBoundary key={movie.id} ><Movie onClick={() => movieClick(movie)} key={movie.id} movie={movie} editMovie={() => editMovie(movie)} deleteMovie={() => deleteMovie(movie)} /></ErrorBoundary>)
           }
         </div>
       </div>
@@ -89,4 +89,4 @@ export default function HomePage (): ReactElement {
     </div>)
 };
 
-// example for anahi
+export { movieContext }

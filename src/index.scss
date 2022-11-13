@@ -12,6 +12,32 @@ b {
     transition: color 1s ease-in;
 }
 
+.search-icon {
+    display: inline-block;
+    position: relative;
+    cursor: pointer;
+    background: transparent;
+    &:before {
+        content: "";
+        width: 17px;
+        height: 17px;
+        border: 2px solid #F65261;
+        display: inline-block;
+        border-radius: 50%;
+    }
+
+    &:after {
+        content: "";
+        width: 0;
+        height: 10PX;
+        border: 1px solid #F65261;
+        position: absolute;
+        top: calc(50% - -4px);
+        left: calc(50% - 13px);
+        transform: rotate(45deg);
+    }
+}
+
 .btn {
     cursor: pointer;
     transition: background-color 200ms ease-in;
@@ -165,10 +191,15 @@ body {
 }
 
 .top-content {
+    background-color: #232323;
     background-size: cover;
     margin: 0 auto;
     padding: 0 60px 140px;
     margin-bottom: 10px;
+
+    &.selected-movie {
+        padding: 0 60px 30px;
+    }
 }
 
 header {
@@ -599,6 +630,69 @@ footer {
                 accent-color: $primary;
             }
         }
+    }
+}
+.top-selected-movie {
+    display: flex;
 
+    .left {
+        flex-basis: 325px;
+        max-height: 445px;
+    }
+
+    .right {
+        flex-basis: calc(100% - 325px);
+        padding-left: 60px;
+        h3 {
+            font-weight: 300;
+            font-size: 40px;
+            line-height: 49px;
+            text-transform: uppercase;
+            color: #FFFFFF;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            span {
+                border-radius: 50%;
+                font-weight: normal;
+                border: 1px solid #FFF;
+                font-size: 20px;
+                line-height: 3;
+                width: 60px;
+                height: 60px;
+                display: inline-block;
+                text-align: center;
+                margin-left: 30px;
+            }
+        }
+
+        .genre {
+            font-weight: 500;
+            font-size: 14px;
+            line-height: 17px;
+            color: #FFFFFF;
+            mix-blend-mode: normal;
+            opacity: 0.5;
+        }
+
+        .meta {
+            color: $primary;
+            font-size: 24px;
+            line-height: 29px;
+            font-weight: 300;
+            margin: 30px 0 40px;
+            .runtime {
+                font-weight: inherit;
+                padding-left: 20px;
+            }
+        }
+
+        .summary {
+            font-size: 20px;
+            line-height: 24px;
+            color: #FFFFFF;
+            font-weight: 300;
+            opacity: 0.5;
+        }
     }
 }

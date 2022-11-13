@@ -2,11 +2,11 @@
 import PropTypes from 'prop-types'
 import React, { ReactElement, useState } from 'react'
 import { MovieTile } from '../models/interfaces'
+import { moviePath } from '../models/utils'
 
-export default function Movie ({ movie, deleteMovie, editMovie }: { movie: MovieTile, deleteMovie: Function, editMovie: Function }): ReactElement {
+export default function Movie ({ movie, deleteMovie, editMovie, onClick }: { movie: MovieTile, deleteMovie: Function, editMovie: Function, onClick: Function }): ReactElement {
   const [openMenu, setOpenMenu] = useState(false)
   const flipMenu = (): void => setOpenMenu(!openMenu)
-  const moviePath = (img: string): string => require(`../assets/${img}`).default
   return (
     <div className="movie-wrapper">
       <div className="img-wrapper">
@@ -18,7 +18,7 @@ export default function Movie ({ movie, deleteMovie, editMovie }: { movie: Movie
             <li><button onClick={() => { flipMenu(); deleteMovie() }}>Delete</button></li>
           </ul>
         </div>}
-        <img src={moviePath(movie.img)} width="100%" height="100%" alt={movie.name} />
+        <img onClick={() => onClick()} src={moviePath(movie.img)} width="100%" height="100%" alt={movie.name} />
       </div>
       <h5>{movie.name} <span>{movie.release_year}</span></h5>
       <h6>{movie.genre}</h6>
