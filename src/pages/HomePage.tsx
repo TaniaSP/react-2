@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from 'react'
+import React, { ReactElement, useState, useCallback } from 'react'
 import Header from '../components/Header'
 import Search from '../components/Search'
 import Footer from '../components/Footer'
@@ -27,25 +27,26 @@ export default function HomePage (): ReactElement {
       .filter(x => x.name.toLowerCase().includes(value.toLowerCase()))
     setMovies(sortBy(filtered))
   }
-  const onGenreSelected = (genre: string): void => {
+  const onGenreSelected = useCallback((genre: string): void => {
     if (genre === 'All') {
       setMovies(sortBy(mockedMovies))
       return
     }
     const filtered = mockedMovies.filter(x => x.genre.toLowerCase() === genre.toLowerCase())
     setMovies(sortBy(filtered))
-  }
+  }, [movies])
 
-  const editMovie = (movie: MovieTile): void => {
+  const editMovie = useCallback((movie: MovieTile): void => {
     setSelectedMovie(movie)
     setOpenEditBox(true)
     setIsEditMovie(true)
-  }
+  }, [movies])
 
-  const deleteMovie = (movie: MovieTile): void => {
+  const deleteMovie = useCallback((movie: MovieTile): void => {
     setOpenConfirmBox(true)
     setSelectedMovie(movie)
-  }
+  }, [movies])
+
   const onConfirm = (): void => {
     const updatedMovies = movies.filter(x => x.id !== selectedMovie.id)
     setMovies(updatedMovies)

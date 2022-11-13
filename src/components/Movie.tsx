@@ -1,4 +1,3 @@
-/* eslint @typescript-eslint/no-var-requires: "off" */
 import PropTypes from 'prop-types'
 import React, { ReactElement, useState } from 'react'
 import { MovieTile } from '../models/interfaces'
@@ -7,6 +6,7 @@ import { moviePath } from '../models/utils'
 export default function Movie ({ movie, deleteMovie, editMovie, onClick }: { movie: MovieTile, deleteMovie: Function, editMovie: Function, onClick: Function }): ReactElement {
   const [openMenu, setOpenMenu] = useState(false)
   const flipMenu = (): void => setOpenMenu(!openMenu)
+
   return (
     <div className="movie-wrapper">
       <div className="img-wrapper">
