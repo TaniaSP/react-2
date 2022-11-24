@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 import CheckList from './CheckList'
 import PropTypes from 'prop-types'
-import { MovieTile } from '../models/interfaces'
+import { MovieResponse } from '../models/interfaces'
 
-export default function EditMovie ({ movie, isEdit, onSubmit, onClose }: { movie: MovieTile, isEdit: boolean, onSubmit: Function, onClose: Function }): JSX.Element {
+export default function EditMovie ({ movie, isEdit, onSubmit, onClose }: { movie: MovieResponse, isEdit: boolean, onSubmit: Function, onClose: Function }): JSX.Element {
   const [editMovie, setEditMovie] = useState({
-    name: movie.name,
+    name: movie.title,
     description: ''
   })
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
