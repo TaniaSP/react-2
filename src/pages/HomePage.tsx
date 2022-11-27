@@ -11,7 +11,7 @@ import Search from '../components/Search'
 import SelectedMovie from '../components/SelectedMovie'
 import { MovieResponse } from '../models/interfaces'
 import { EmptyMovie, genres } from '../models/mocks'
-import { useGetMoviesQuery } from '../services/moviesService'
+import { useDeleteMovieMutation, useGetMoviesQuery } from '../services/moviesService'
 
 const movieContext = React.createContext<any>(null)
 
@@ -25,6 +25,8 @@ export default function HomePage (): ReactElement {
   const [filter, setFilter] = useState([] as string[])
   const [search, setSearch] = useState('')
   const { data: movies } = useGetMoviesQuery({ sortBy, filter, search })
+
+  const [deleteMovieCall] = useDeleteMovieMutation()
 
   const onSearch = (value: string): void => {
     setSearch(value)
@@ -48,8 +50,8 @@ export default function HomePage (): ReactElement {
     setSelectedMovie(movie)
   }, [])
 
-  const onConfirm = (): void => {
-    // DELETE VIA API
+  const onConfirm = async (): Promise<void> => {
+    await deleteMovieCall(selectedMovie.id)
     setOpenConfirmBox(false)
   }
   const onClose = (): void => {
@@ -68,7 +70,7 @@ export default function HomePage (): ReactElement {
     <div className='main'>
       <movieContext.Provider value={{ clickMovie, setClickedMovie }}>
         {openConfirmBox && <DeleteMovie onConfirm={onConfirm} onClose={onClose} />}
-        {openEditBox && <EditMovie movie={selectedMovie} isEdit={isEditMovie} onSubmit={onClose} onClose={onClose} />}
+        {openEditBox && <EditMovie movie={selectedMovie} isEdit={isEditMovie} onClose={onClose} />}
         <div className={(clickMovie != null) ? 'selected-movie top-content' : 'top-content'} style={{ backgroundImage: (clickMovie != null) ? '' : `url('${(header_bg as string)}')` }}>
           <Header onAddMovie={addMovie} />
           <ErrorBoundary>

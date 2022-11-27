@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 import React, { ReactElement, useState } from 'react'
-import { MovieResponse } from '../models/interfaces'
+import { IMG_FALLBACK, MovieResponse } from '../models/interfaces'
 import { EmptyMovie } from '../models/mocks'
 
 export default function Movie ({ movie, deleteMovie, editMovie, onClick }: { movie: MovieResponse, deleteMovie: Function, editMovie: Function, onClick: Function }): ReactElement {
@@ -19,7 +19,11 @@ export default function Movie ({ movie, deleteMovie, editMovie, onClick }: { mov
             <li><button onClick={() => { flipMenu(); deleteMovie() }}>Delete</button></li>
           </ul>
         </div>}
-        <img onClick={() => onClick()} src={movie.poster_path} width="100%" height="100%" alt={movie.title} />
+        <img onClick={() => onClick()} onError={({ currentTarget }) => {
+          currentTarget.onerror = null
+          currentTarget.src = IMG_FALLBACK
+        }
+        } src={movie.poster_path} width="100%" height="100%" alt={movie.title} />
       </div>
       <h5>{movie.title} <span>{year}</span></h5>
       <h6>{movie.genres.join(', ')}</h6>
