@@ -1,55 +1,55 @@
-import React, { ReactElement, useState, useCallback } from 'react'
-import Header from '../components/Header'
-import Search from '../components/Search'
-import Footer from '../components/Footer'
-import ErrorBoundary from '../components/ErrorBoundary'
-import Movie from '../components/Movie'
-import { EmptyMovie, genres, mockedMovies } from '../models/mocks'
-import MovieControls from '../components/MovieControls'
+import React, { ReactElement, useCallback, useState } from 'react'
 import header_bg from '../assets/header_bg.png'
-import { MovieTile } from '../models/interfaces'
 import DeleteMovie from '../components/DeleteMovie'
 import EditMovie from '../components/EditMovie'
+import ErrorBoundary from '../components/ErrorBoundary'
+import Footer from '../components/Footer'
+import Header from '../components/Header'
+import Movie from '../components/Movie'
+import MovieControls from '../components/MovieControls'
+import Search from '../components/Search'
 import SelectedMovie from '../components/SelectedMovie'
-import { sortBy } from '../models/utils'
+import { MovieResponse } from '../models/interfaces'
+import { EmptyMovie, genres } from '../models/mocks'
+import { useGetMoviesQuery } from '../services/moviesService'
 
 const movieContext = React.createContext<any>(null)
 
 export default function HomePage (): ReactElement {
-  const [movies, setMovies] = useState(sortBy(mockedMovies))
   const [openConfirmBox, setOpenConfirmBox] = useState(false)
   const [openEditBox, setOpenEditBox] = useState(false)
   const [isEditMovie, setIsEditMovie] = useState(false)
   const [selectedMovie, setSelectedMovie] = useState(EmptyMovie)
-  const [clickMovie, setClickedMovie] = useState<MovieTile | null>(null)
-  const onSearch = (value: string): void => {
-    const filtered = mockedMovies
-      .filter(x => x.name.toLowerCase().includes(value.toLowerCase()))
-    setMovies(sortBy(filtered))
-  }
-  const onGenreSelected = useCallback((genre: string): void => {
-    if (genre === 'All') {
-      setMovies(sortBy(mockedMovies))
-      return
-    }
-    const filtered = mockedMovies.filter(x => x.genre.toLowerCase() === genre.toLowerCase())
-    setMovies(sortBy(filtered))
-  }, [movies])
+  const [clickMovie, setClickedMovie] = useState<MovieResponse | null>(null)
+  const [sortBy, setSortBy] = useState('release_date')
+  const [filter, setFilter] = useState([] as string[])
+  const [search, setSearch] = useState('')
+  const { data: movies } = useGetMoviesQuery({ sortBy, filter, search })
 
-  const editMovie = useCallback((movie: MovieTile): void => {
+  const onSearch = (value: string): void => {
+    setSearch(value)
+  }
+
+  const onGenreSelected = useCallback((genre: string): void => {
+    (genre === 'All') ? setFilter([]) : setFilter([genre])
+  }, [])
+
+  const onSortSelected = useCallback((sortBy: string): void => {
+    setSortBy(sortBy)
+  }, [])
+  const editMovie = useCallback((movie: MovieResponse): void => {
     setSelectedMovie(movie)
     setOpenEditBox(true)
     setIsEditMovie(true)
-  }, [movies])
+  }, [])
 
-  const deleteMovie = useCallback((movie: MovieTile): void => {
+  const deleteMovie = useCallback((movie: MovieResponse): void => {
     setOpenConfirmBox(true)
     setSelectedMovie(movie)
-  }, [movies])
+  }, [])
 
   const onConfirm = (): void => {
-    const updatedMovies = movies.filter(x => x.id !== selectedMovie.id)
-    setMovies(updatedMovies)
+    // DELETE VIA API
     setOpenConfirmBox(false)
   }
   const onClose = (): void => {
@@ -61,7 +61,7 @@ export default function HomePage (): ReactElement {
     setSelectedMovie(EmptyMovie)
     setIsEditMovie(false)
   }
-  const movieClick = (movie: MovieTile): void => {
+  const movieClick = (movie: MovieResponse): void => {
     setClickedMovie(movie)
   }
   return (
@@ -79,10 +79,10 @@ export default function HomePage (): ReactElement {
         </div>
       </movieContext.Provider>
       <div className="main-content">
-        <MovieControls count={movies.length} genres={genres} onGenreSelected={onGenreSelected} />
+        <MovieControls count={movies?.length} genres={genres} onGenreSelected={onGenreSelected} onSortSelected={onSortSelected} />
         <div className='movie-tiles'>
           {
-            movies.map(movie => <ErrorBoundary key={movie.id} ><Movie onClick={() => movieClick(movie)} key={movie.id} movie={movie} editMovie={() => editMovie(movie)} deleteMovie={() => deleteMovie(movie)} /></ErrorBoundary>)
+            movies?.map(movie => <ErrorBoundary key={movie.id} ><Movie onClick={() => movieClick(movie)} key={movie.id} movie={movie} editMovie={() => editMovie(movie)} deleteMovie={() => deleteMovie(movie)} /></ErrorBoundary>)
           }
         </div>
       </div>
