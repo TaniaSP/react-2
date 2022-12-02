@@ -1,4 +1,6 @@
-import React, { ReactElement, useCallback, useState } from 'react'
+import React, { ReactElement, useCallback, useEffect, useState } from 'react'
+import { useMatches, useSearchParams } from 'react-router-dom'
+
 import header_bg from '../assets/header_bg.png'
 import DeleteMovie from '../components/DeleteMovie'
 import EditMovie from '../components/EditMovie'
@@ -12,7 +14,6 @@ import SelectedMovie from '../components/SelectedMovie'
 import { MovieResponse } from '../models/interfaces'
 import { EmptyMovie, genres } from '../models/mocks'
 import { useDeleteMovieMutation, useGetMoviesQuery } from '../services/moviesService'
-
 const movieContext = React.createContext<any>(null)
 
 export default function HomePage (): ReactElement {
@@ -21,24 +22,13 @@ export default function HomePage (): ReactElement {
   const [isEditMovie, setIsEditMovie] = useState(false)
   const [selectedMovie, setSelectedMovie] = useState(EmptyMovie)
   const [clickMovie, setClickedMovie] = useState<MovieResponse | null>(null)
-  const [sortBy, setSortBy] = useState('release_date')
-  const [filter, setFilter] = useState([] as string[])
+  const [sortBy, setSortBy] = useState('vote_count')
+  const [filter, setFilter] = useState('')
   const [search, setSearch] = useState('')
   const { data: movies } = useGetMoviesQuery({ sortBy, filter, search })
 
   const [deleteMovieCall] = useDeleteMovieMutation()
 
-  const onSearch = (value: string): void => {
-    setSearch(value)
-  }
-
-  const onGenreSelected = useCallback((genre: string): void => {
-    (genre === 'All') ? setFilter([]) : setFilter([genre])
-  }, [])
-
-  const onSortSelected = useCallback((sortBy: string): void => {
-    setSortBy(sortBy)
-  }, [])
   const editMovie = useCallback((movie: MovieResponse): void => {
     setSelectedMovie(movie)
     setOpenEditBox(true)
@@ -63,9 +53,30 @@ export default function HomePage (): ReactElement {
     setSelectedMovie(EmptyMovie)
     setIsEditMovie(false)
   }
-  const movieClick = (movie: MovieResponse): void => {
-    setClickedMovie(movie)
-  }
+
+  const [, queryMatcher] = useMatches()
+  const [searchParams] = useSearchParams()
+
+  useEffect(() => {
+    const dataquery = queryMatcher !== undefined ? queryMatcher.params.queryParam ?? '' : ''
+    setSearch(dataquery)
+    const genre = searchParams.get('genre') ?? ''
+    const sortByQuery = searchParams.get('sortBy') ?? ''
+    const movieId = searchParams.get('movieId') ?? ''
+    if (genre !== '') {
+      genre === 'All' ? setFilter('') : setFilter(genre)
+    }
+    if (sortByQuery !== '') {
+      setSortBy(sortByQuery)
+    }
+    if (movieId !== '') {
+      const foundMovie = movies?.find(x => x.id === +movieId)
+      if (foundMovie !== undefined) {
+        setClickedMovie(foundMovie)
+      }
+    }
+  }, [queryMatcher, searchParams, movies])
+
   return (
     <div className='main'>
       <movieContext.Provider value={{ clickMovie, setClickedMovie }}>
@@ -76,15 +87,15 @@ export default function HomePage (): ReactElement {
           <ErrorBoundary>
             {(clickMovie != null)
               ? <SelectedMovie movie={clickMovie} />
-              : <Search onSearch={onSearch} />}
+              : <Search query={search} />}
           </ErrorBoundary>
         </div>
       </movieContext.Provider>
       <div className="main-content">
-        <MovieControls count={movies?.length} genres={genres} onGenreSelected={onGenreSelected} onSortSelected={onSortSelected} />
+        <MovieControls count={movies?.length} genres={genres} selected={filter} sortSelected={sortBy} />
         <div className='movie-tiles'>
           {
-            movies?.map(movie => <ErrorBoundary key={movie.id} ><Movie onClick={() => movieClick(movie)} key={movie.id} movie={movie} editMovie={() => editMovie(movie)} deleteMovie={() => deleteMovie(movie)} /></ErrorBoundary>)
+            movies?.map(movie => <ErrorBoundary key={movie.id} ><Movie key={movie.id} movie={movie} editMovie={() => editMovie(movie)} deleteMovie={() => deleteMovie(movie)} /></ErrorBoundary>)
           }
         </div>
       </div>
