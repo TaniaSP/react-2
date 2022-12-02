@@ -1,9 +1,9 @@
 import store from '../store/store'
 
 export interface MovieResponse {
+  id: number
   budget: number
   genres: string[]
-  id: number
   overview: string
   poster_path: string
   release_date: string
@@ -16,3 +16,5 @@ export interface MovieResponse {
 }
 
 export type RootState = ReturnType<typeof store.getState>
+
+export const IMG_FALLBACK = 'https://via.placeholder.com/320x455'
