@@ -11,7 +11,8 @@
     "extends": [
         "plugin:react/recommended",
         "standard-with-typescript",
-        "plugin:react-hooks/recommended"
+        "plugin:react-hooks/recommended",
+        "plugin:cypress/recommended"
     ],
     "overrides": [],
     "parserOptions": {
@@ -24,5 +25,6 @@
     "plugins": [
         "react"
     ],
-    "rules": {}
+    "rules": {},
+    "ignorePatterns": [".eslintrc.js"]
 }
