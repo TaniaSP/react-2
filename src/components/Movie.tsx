@@ -2,11 +2,22 @@ import PropTypes from 'prop-types'
 import React, { ReactElement, useState } from 'react'
 import { IMG_FALLBACK, MovieResponse } from '../models/interfaces'
 import { EmptyMovie } from '../models/mocks'
+import { useLocation, useNavigate } from 'react-router-dom'
 
-export default function Movie ({ movie, deleteMovie, editMovie, onClick }: { movie: MovieResponse, deleteMovie: Function, editMovie: Function, onClick: Function }): ReactElement {
+export default function Movie ({ movie, deleteMovie, editMovie }: { movie: MovieResponse, deleteMovie: Function, editMovie: Function }): ReactElement {
   const year = new Date(movie.release_date).getFullYear()
   const [openMenu, setOpenMenu] = useState(false)
   const flipMenu = (): void => setOpenMenu(!openMenu)
+  const navigate = useNavigate()
+  const location = useLocation()
+
+  const goTo = (): void => {
+    const search = `movieId=${movie.id}`
+    navigate({
+      pathname: location.pathname,
+      search
+    })
+  }
 
   return (
     <div className="movie-wrapper">
@@ -19,7 +30,7 @@ export default function Movie ({ movie, deleteMovie, editMovie, onClick }: { mov
             <li><button onClick={() => { flipMenu(); deleteMovie() }}>Delete</button></li>
           </ul>
         </div>}
-        <img onClick={() => onClick()} onError={({ currentTarget }) => {
+        <img onClick={() => goTo()} onError={({ currentTarget }) => {
           currentTarget.onerror = null
           currentTarget.src = IMG_FALLBACK
         }

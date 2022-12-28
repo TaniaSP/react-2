@@ -33,7 +33,7 @@ const store = configureStore({
 
 setupListeners(store.dispatch)
 
-export const selectMoviesResult = apiSlice.endpoints.getMovies.select({ sortBy: 'release_date', filter: [], search: '' })
+export const selectMoviesResult = apiSlice.endpoints.getMovies.select({ sortBy: 'vote_count', filter: '', search: '' })
 
 export const selectAllMovies = createSelector(
   selectMoviesResult,

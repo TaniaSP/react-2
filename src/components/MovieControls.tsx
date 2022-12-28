@@ -1,30 +1,78 @@
-import React, { ReactElement, useState } from 'react'
+import React, { ReactElement, useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
+import { useLocation, useNavigate } from 'react-router-dom'
 
-export default function MovieContros ({ genres, count, onGenreSelected, onSortSelected }: { genres: string[], count: number, onGenreSelected: Function, onSortSelected: Function }): ReactElement {
-  const sortOpts = ['Release Date', 'Rating']
+export default function MovieContros ({ genres, selected, count, sortSelected }: { genres: string[], selected: string, count: number, sortSelected: string }): ReactElement {
+  const sortOpts = ['Release Date', 'Rating', 'Popular']
   const [selectedGenre, setSelectedGenre] = useState(genres[0])
   const [openBox, setOpenBox] = useState(false)
   const [selectedSort, setSelectedSort] = useState(sortOpts[0])
+  const [selectedSortDisplay, setSelectedSortDisplay] = useState('')
+  const navigate = useNavigate()
+  const location = useLocation()
+
+  const goTo = (search: string): void => {
+    navigate({
+      pathname: location.pathname,
+      search
+    })
+  }
 
   const handleClick = (selected: string): void => {
-    setSelectedGenre(selected)
-    onGenreSelected(selected !== 'All' ? selected.toLocaleLowerCase() : '')
+    const genre = selected !== 'all' ? selected.toLocaleLowerCase() : ''
+    const selectedSortByQuery = `?sortBy=${selectedSort}`
+    const selectedGenreQuery = genre !== '' ? `&genre=${genre}` : ''
+    goTo(selectedSortByQuery + selectedGenreQuery)
   }
 
   const handleSortSelected = (selected: string): void => {
-    setSelectedSort(selected)
-    const selectedQuery = selected === 'Release Date' ? 'release_date' : 'vote_average'
-    onSortSelected(selectedQuery)
+    let selectedSortBy = ''
+    switch (selected) {
+      case 'Release Date':
+        selectedSortBy = 'release_date'
+        break
+      case 'Rating':
+        selectedSortBy = 'vote_average'
+        break
+      case 'Popular':
+        selectedSortBy = 'vote_count'
+        break
+      default:
+        selectedSortBy = selected
+    }
+
+    const selectedSortByQuery = `?sortBy=${selectedSortBy}`
+    const selectedGenreQuery = selectedGenre !== '' ? `&genre=${selectedGenre}` : ''
     setOpenBox(false)
+    goTo(selectedSortByQuery + selectedGenreQuery)
   }
+
+  useEffect(() => {
+    setSelectedGenre(selected)
+    setSelectedSort(sortSelected)
+
+    switch (sortSelected) {
+      case 'release_date':
+        setSelectedSortDisplay('Release Date')
+        break
+      case 'vote_average':
+        setSelectedSortDisplay('Rating')
+        break
+      case 'vote_count':
+        setSelectedSortDisplay('Popular')
+        break
+      default:
+        setSelectedSortDisplay(sortSelected)
+    }
+  }, [selected, sortSelected])
+
   return (
     <div className='controls'>
       <div className="genre-selector">
         {genres.map((x, i) => <button onClick={() => handleClick(x)} className={selectedGenre === x ? 'selected' : ''} key={i}>{x}</button>)}
       </div>
       <div className='sort-selector'>
-        <span>Sort By:</span> <button onClick={() => setOpenBox(!openBox)}>{selectedSort}</button>
+        <span>Sort By:</span> <button onClick={() => setOpenBox(!openBox)}>{selectedSortDisplay}</button>
         {
           openBox && <ul className='sort-options'>
             {
@@ -38,7 +86,7 @@ export default function MovieContros ({ genres, count, onGenreSelected, onSortSe
   )
 }
 MovieContros.defaultProps = {
-  count: 0, genres: []
+  count: 0, genres: [], selected: '', sortSelected: ''
 }
 MovieContros.propTypes = {
   count: PropTypes.number.isRequired, genres: PropTypes.arrayOf(PropTypes.string).isRequired

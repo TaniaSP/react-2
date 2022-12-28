@@ -5,11 +5,11 @@ export const apiSlice = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:4000' }),
   tagTypes: ['Movies'],
   endpoints: (build) => ({
-    getMovies: build.query<MovieResponse[], { sortBy: string, filter: string[], search: string }>({
+    getMovies: build.query<MovieResponse[], { sortBy: string, filter: string, search: string }>({
       query: ({ sortBy, filter, search }) => {
-        const filterQuery = (filter.length > 0) ? `&filter=${filter.join(',')}` : ''
+        const filterQuery = filter !== '' ? `&filter=${filter}` : ''
         const searchQuery = search !== '' ? `&searchBy=title&search=${search}` : ''
-        return { url: `movies?limit=30&sortOrder=asc&sortBy=${sortBy}${filterQuery}${searchQuery}` }
+        return { url: `movies?limit=120&sortOrder=desc&sortBy=${sortBy}${filterQuery}${searchQuery}` }
       },
       transformResponse: (response: any) => response.data,
       providesTags: ['Movies']

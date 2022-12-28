@@ -1,6 +1,6 @@
 import { MovieResponse } from './interfaces'
 
-export const genres = ['All', 'Documentary', 'Comedy', 'Horror', 'Crime']
+export const genres = ['all', 'documentary', 'comedy', 'horror', 'crime']
 
 export const EmptyMovie: MovieResponse = {
   budget: 0,
