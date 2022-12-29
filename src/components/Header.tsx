@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { movieContext } from '../pages/HomePage'
+import { movieContext } from '../pages'
 import Logo from './Logo'
 
 export default function Header ({ onAddMovie }: { onAddMovie: Function }): JSX.Element {

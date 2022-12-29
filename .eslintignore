@@ -3,3 +3,6 @@ dist
 cypress
 cypress.config.ts
 jest.config.ts
+.next
+next-env.d.ts
+next.config.js
