@@ -282,7 +282,7 @@ footer {
         font-size: 20px;
         line-height: 24px;
         text-align: center;
-
+        box-shadow: 0 0 13px 5px #000
     }
 }
 
@@ -669,6 +669,8 @@ footer {
     .left {
         flex-basis: 325px;
         max-height: 445px;
+        overflow: hidden;
+        position: relative;
     }
 
     .right {

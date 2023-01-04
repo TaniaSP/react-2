@@ -66,10 +66,10 @@ export default function MovieContros ({ genres, selected, count, sortSelected }:
   return (
     <div className='controls'>
       <div className="genre-selector">
-        {genres.map((x, i) => <button onClick={() => handleClick(x)} className={selectedGenre === x ? 'selected' : ''} key={i}>{x}</button>)}
+        {genres.map((x, i) => <button aria-label="Close Genre Selector" onClick={() => handleClick(x)} className={selectedGenre === x ? 'selected' : ''} key={i}>{x}</button>)}
       </div>
       <div className='sort-selector'>
-        <span>Sort By:</span> <button onClick={() => setOpenBox(!openBox)}>{selectedSortDisplay}</button>
+        <span>Sort By:</span> <button aria-label="Open Sort Menu" onClick={() => setOpenBox(!openBox)}>{selectedSortDisplay}</button>
         {
           openBox && <ul className='sort-options'>
             {

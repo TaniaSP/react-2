@@ -14,6 +14,7 @@ import { MovieResponse } from '../models/interfaces'
 import { EmptyMovie, genres } from '../models/mocks'
 import { useSearchParams } from 'next/navigation'
 import { useRouter } from 'next/router'
+import Head from 'next/head'
 
 import { apiSlice, useDeleteMovieMutation, useGetMoviesQuery } from '../services/moviesService'
 import { wrapper } from '../store/store'
@@ -115,6 +116,10 @@ function HomePage (): ReactElement {
   return (
     <>
       <div className='main'>
+        <Head>
+          <title>Tania React App</title>
+          <meta name="description" content="Tania React App" />
+        </Head>
         <movieContext.Provider value={{ clickMovie, setClickedMovie }}>
           {openConfirmBox && <DeleteMovie onConfirm={onConfirm} onClose={onClose} />}
           {openEditBox && <EditMovie movie={selectedMovie} isEdit={isEditMovie} onClose={onClose} />}

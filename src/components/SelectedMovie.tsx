@@ -1,18 +1,21 @@
 import React from 'react'
-import { IMG_FALLBACK, MovieResponse } from '../models/interfaces'
+import { MovieResponse } from '../models/interfaces'
+import Image from 'next/image'
 
 export default function SelectedMovie ({ movie }: { movie: MovieResponse }): JSX.Element {
   const year = new Date(movie.release_date).getFullYear()
   const hours = Math.floor(movie.runtime / 60)
   const minutes = movie.runtime % 60
   const runtime = `${hours}h${minutes > 0 ? ` ${minutes}m` : ''}`
+
+  function imageLoader ({ src }: { src: string }): string {
+    return src
+  }
+
   return (
     <div className='top-selected-movie'>
       <div className='left'>
-        <img onError={({ currentTarget }) => {
-          currentTarget.onerror = null
-          currentTarget.src = IMG_FALLBACK
-        }} src={movie.poster_path} width="100%" height="100%" />
+        <Image src={movie.poster_path} alt="Selected Image" loader={imageLoader} fill />
       </div>
       <div className='right'>
         <h3>{movie.title} <span>{movie.vote_average}</span></h3>

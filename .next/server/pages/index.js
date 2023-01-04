@@ -5,7 +5,7 @@ exports.id = 405;
 exports.ids = [405];
 exports.modules = {
 
-/***/ 9254:
+/***/ 9663:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 // ESM COMPAT FLAG
@@ -546,6 +546,7 @@ function Header(_ref) {
       setClickedMovie = _useContext.setClickedMovie;
 
   return /*#__PURE__*/external_react_default().createElement("header", null, /*#__PURE__*/external_react_default().createElement(Logo, null), clickMovie !== null ? /*#__PURE__*/external_react_default().createElement("button", {
+    "aria-label": "Search",
     onClick: function onClick() {
       return setClickedMovie(null);
     },
@@ -557,8 +558,6 @@ function Header(_ref) {
     className: "btn"
   }, "+ Add Movie"));
 }
-;// CONCATENATED MODULE: ./src/models/interfaces.ts
-var IMG_FALLBACK = 'https://via.placeholder.com/320x455';
 ;// CONCATENATED MODULE: ./src/models/mocks.ts
 var genres = ['all', 'documentary', 'comedy', 'horror', 'crime'];
 var EmptyMovie = {
@@ -577,6 +576,9 @@ var EmptyMovie = {
 };
 ;// CONCATENATED MODULE: external "next/router"
 const router_namespaceObject = require("next/router");
+// EXTERNAL MODULE: ./node_modules/next/image.js
+var next_image = __webpack_require__(5675);
+var image_default = /*#__PURE__*/__webpack_require__.n(next_image);
 ;// CONCATENATED MODULE: ./src/components/Movie.tsx
 function Movie_slicedToArray(arr, i) { return Movie_arrayWithHoles(arr) || Movie_iterableToArrayLimit(arr, i) || Movie_unsupportedIterableToArray(arr, i) || Movie_nonIterableRest(); }
 
@@ -616,6 +618,11 @@ function Movie(_ref) {
     void router.push("/search?".concat(search));
   };
 
+  function imageLoader(_ref2) {
+    var src = _ref2.src;
+    return src;
+  }
+
   return /*#__PURE__*/external_react_default().createElement("div", {
     className: "movie-wrapper"
   }, /*#__PURE__*/external_react_default().createElement("div", {
@@ -641,18 +648,13 @@ function Movie(_ref) {
       flipMenu();
       deleteMovie();
     }
-  }, "Delete")))), /*#__PURE__*/external_react_default().createElement("img", {
+  }, "Delete")))), /*#__PURE__*/external_react_default().createElement((image_default()), {
+    loader: imageLoader,
     onClick: function onClick() {
       return goTo();
     },
-    onError: function onError(_ref2) {
-      var currentTarget = _ref2.currentTarget;
-      currentTarget.onerror = null;
-      currentTarget.src = IMG_FALLBACK;
-    },
     src: movie.poster_path,
-    width: "100%",
-    height: "100%",
+    fill: true,
     alt: movie.title
   })), /*#__PURE__*/external_react_default().createElement("h5", null, movie.title, " ", /*#__PURE__*/external_react_default().createElement("span", null, year)), /*#__PURE__*/external_react_default().createElement("h6", null, movie.genres.join(', ')));
 }
@@ -773,6 +775,7 @@ function MovieContros(_ref) {
     className: "genre-selector"
   }, genres.map(function (x, i) {
     return /*#__PURE__*/external_react_default().createElement("button", {
+      "aria-label": "Close Genre Selector",
       onClick: function onClick() {
         return handleClick(x);
       },
@@ -782,6 +785,7 @@ function MovieContros(_ref) {
   })), /*#__PURE__*/external_react_default().createElement("div", {
     className: "sort-selector"
   }, /*#__PURE__*/external_react_default().createElement("span", null, "Sort By:"), " ", /*#__PURE__*/external_react_default().createElement("button", {
+    "aria-label": "Open Sort Menu",
     onClick: function onClick() {
       return setOpenBox(!openBox);
     }
@@ -860,6 +864,7 @@ function Search(_ref) {
     },
     placeholder: "What do you want to search?"
   }), /*#__PURE__*/external_react_default().createElement("button", {
+    "aria-label": "Search",
     className: "btn",
     onClick: function onClick() {
       return search();
@@ -875,19 +880,21 @@ function SelectedMovie(_ref) {
   var hours = Math.floor(movie.runtime / 60);
   var minutes = movie.runtime % 60;
   var runtime = "".concat(hours, "h").concat(minutes > 0 ? " ".concat(minutes, "m") : '');
+
+  function imageLoader(_ref2) {
+    var src = _ref2.src;
+    return src;
+  }
+
   return /*#__PURE__*/external_react_default().createElement("div", {
     className: "top-selected-movie"
   }, /*#__PURE__*/external_react_default().createElement("div", {
     className: "left"
-  }, /*#__PURE__*/external_react_default().createElement("img", {
-    onError: function onError(_ref2) {
-      var currentTarget = _ref2.currentTarget;
-      currentTarget.onerror = null;
-      currentTarget.src = IMG_FALLBACK;
-    },
+  }, /*#__PURE__*/external_react_default().createElement((image_default()), {
     src: movie.poster_path,
-    width: "100%",
-    height: "100%"
+    alt: "Selected Image",
+    loader: imageLoader,
+    fill: true
   })), /*#__PURE__*/external_react_default().createElement("div", {
     className: "right"
   }, /*#__PURE__*/external_react_default().createElement("h3", null, movie.title, " ", /*#__PURE__*/external_react_default().createElement("span", null, movie.vote_average)), /*#__PURE__*/external_react_default().createElement("p", {
@@ -902,6 +909,9 @@ function SelectedMovie(_ref) {
 }
 // EXTERNAL MODULE: ./node_modules/next/navigation.js
 var navigation = __webpack_require__(9332);
+;// CONCATENATED MODULE: external "next/head"
+const head_namespaceObject = require("next/head");
+var head_default = /*#__PURE__*/__webpack_require__.n(head_namespaceObject);
 // EXTERNAL MODULE: ./src/store/store.ts
 var store = __webpack_require__(9633);
 ;// CONCATENATED MODULE: ./src/pages/index.tsx
@@ -924,6 +934,7 @@ function pages_regeneratorRuntime() { "use strict"; /*! regenerator-runtime -- C
 function pages_asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function pages_asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { pages_asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { pages_asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
 
 
 
@@ -1134,7 +1145,10 @@ function HomePage() {
   }, [queryMatcher, searchParams, movies]);
   return /*#__PURE__*/external_react_default().createElement((external_react_default()).Fragment, null, /*#__PURE__*/external_react_default().createElement("div", {
     className: "main"
-  }, /*#__PURE__*/external_react_default().createElement(movieContext.Provider, {
+  }, /*#__PURE__*/external_react_default().createElement((head_default()), null, /*#__PURE__*/external_react_default().createElement("title", null, "Tania React App"), /*#__PURE__*/external_react_default().createElement("meta", {
+    name: "description",
+    content: "Tania React App"
+  })), /*#__PURE__*/external_react_default().createElement(movieContext.Provider, {
     value: {
       clickMovie: clickMovie,
       setClickedMovie: setClickedMovie
@@ -1208,6 +1222,20 @@ module.exports = require("next-redux-wrapper");
 
 /***/ }),
 
+/***/ 3918:
+/***/ ((module) => {
+
+module.exports = require("next/dist/shared/lib/amp-context.js");
+
+/***/ }),
+
+/***/ 5732:
+/***/ ((module) => {
+
+module.exports = require("next/dist/shared/lib/amp-mode.js");
+
+/***/ }),
+
 /***/ 3280:
 /***/ ((module) => {
 
@@ -1229,10 +1257,45 @@ module.exports = require("next/dist/shared/lib/hooks-client-context.js");
 
 /***/ }),
 
+/***/ 3539:
+/***/ ((module) => {
+
+module.exports = require("next/dist/shared/lib/i18n/detect-domain-locale.js");
+
+/***/ }),
+
 /***/ 4014:
 /***/ ((module) => {
 
 module.exports = require("next/dist/shared/lib/i18n/normalize-locale-path.js");
+
+/***/ }),
+
+/***/ 4486:
+/***/ ((module) => {
+
+module.exports = require("next/dist/shared/lib/image-blur-svg.js");
+
+/***/ }),
+
+/***/ 744:
+/***/ ((module) => {
+
+module.exports = require("next/dist/shared/lib/image-config-context.js");
+
+/***/ }),
+
+/***/ 5843:
+/***/ ((module) => {
+
+module.exports = require("next/dist/shared/lib/image-config.js");
+
+/***/ }),
+
+/***/ 9552:
+/***/ ((module) => {
+
+module.exports = require("next/dist/shared/lib/image-loader");
 
 /***/ }),
 
@@ -1268,6 +1331,13 @@ module.exports = require("next/dist/shared/lib/page-path/denormalize-page-path.j
 /***/ ((module) => {
 
 module.exports = require("next/dist/shared/lib/router-context.js");
+
+/***/ }),
+
+/***/ 3431:
+/***/ ((module) => {
+
+module.exports = require("next/dist/shared/lib/router/utils/add-locale.js");
 
 /***/ }),
 
@@ -1390,10 +1460,24 @@ module.exports = require("next/dist/shared/lib/server-inserted-html.js");
 
 /***/ }),
 
+/***/ 2470:
+/***/ ((module) => {
+
+module.exports = require("next/dist/shared/lib/side-effect.js");
+
+/***/ }),
+
 /***/ 9232:
 /***/ ((module) => {
 
 module.exports = require("next/dist/shared/lib/utils.js");
+
+/***/ }),
+
+/***/ 618:
+/***/ ((module) => {
+
+module.exports = require("next/dist/shared/lib/utils/warn-once.js");
 
 /***/ }),
 
@@ -1425,7 +1509,7 @@ module.exports = require("react-dom");
 var __webpack_require__ = require("../webpack-runtime.js");
 __webpack_require__.C(exports);
 var __webpack_exec__ = (moduleId) => (__webpack_require__(__webpack_require__.s = moduleId))
-var __webpack_exports__ = __webpack_require__.X(0, [210,676,664,332,633], () => (__webpack_exec__(9254)));
+var __webpack_exports__ = __webpack_require__.X(0, [210,676,664,505,192,633], () => (__webpack_exec__(9663)));
 module.exports = __webpack_exports__;
 
 })();

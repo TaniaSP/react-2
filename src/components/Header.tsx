@@ -7,7 +7,7 @@ export default function Header ({ onAddMovie }: { onAddMovie: Function }): JSX.E
   return (
     <header>
       <Logo />
-      {clickMovie !== null ? <button onClick={() => setClickedMovie(null)} className='search-icon'></button> : <button onClick={() => onAddMovie()} className='btn'>+ Add Movie</button>}
+      {clickMovie !== null ? <button aria-label="Search" onClick={() => setClickedMovie(null)} className='search-icon'></button> : <button onClick={() => onAddMovie()} className='btn'>+ Add Movie</button>}
     </header>
   )
 }
