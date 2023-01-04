@@ -1,5 +1,3 @@
-import store from '../store/store'
-
 export interface MovieResponse {
   id: number
   budget: number
@@ -14,7 +12,5 @@ export interface MovieResponse {
   vote_average: number
   vote_count: number
 }
-
-export type RootState = ReturnType<typeof store.getState>
 
 export const IMG_FALLBACK = 'https://via.placeholder.com/320x455'

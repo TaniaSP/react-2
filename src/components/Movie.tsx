@@ -2,21 +2,16 @@ import PropTypes from 'prop-types'
 import React, { ReactElement, useState } from 'react'
 import { IMG_FALLBACK, MovieResponse } from '../models/interfaces'
 import { EmptyMovie } from '../models/mocks'
-import { useLocation, useNavigate } from 'react-router-dom'
-
+import { useRouter } from 'next/router'
 export default function Movie ({ movie, deleteMovie, editMovie }: { movie: MovieResponse, deleteMovie: Function, editMovie: Function }): ReactElement {
+  const router = useRouter()
   const year = new Date(movie.release_date).getFullYear()
   const [openMenu, setOpenMenu] = useState(false)
   const flipMenu = (): void => setOpenMenu(!openMenu)
-  const navigate = useNavigate()
-  const location = useLocation()
 
   const goTo = (): void => {
     const search = `movieId=${movie.id}`
-    navigate({
-      pathname: location.pathname,
-      search
-    })
+    void router.push(`/search?${search}`)
   }
 
   return (

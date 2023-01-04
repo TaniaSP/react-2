@@ -1,43 +1,15 @@
-import { configureStore, createSelector, createSlice } from '@reduxjs/toolkit'
-import { setupListeners } from '@reduxjs/toolkit/dist/query'
-import { MovieResponse } from '../models/interfaces'
+import { configureStore, Store } from '@reduxjs/toolkit'
 import { apiSlice } from '../services/moviesService'
+import { createWrapper } from 'next-redux-wrapper'
 
-interface MovieState { value: MovieResponse[] };
-
-const initialState: MovieState = { value: [] }
-
-const moviesSlice = createSlice({
-  name: 'moviesReducer',
-  initialState,
-  reducers: {
-    SetAllAction: (state, action) => ({
-      ...state,
-      value: action.payload
-    })
-  }
-})
-
-export const {
-  SetAllAction
-} = moviesSlice.actions
-
-const store = configureStore({
+export const makeStore: any = () => configureStore({
   reducer: {
-    movies: moviesSlice.reducer,
     [apiSlice.reducerPath]: apiSlice.reducer
   },
   middleware: (getDefaultMiddleware: any) =>
     getDefaultMiddleware().concat(apiSlice.middleware)
 })
 
-setupListeners(store.dispatch)
+export type AppStore = ReturnType<typeof makeStore>
 
-export const selectMoviesResult = apiSlice.endpoints.getMovies.select({ sortBy: 'vote_count', filter: '', search: '' })
-
-export const selectAllMovies = createSelector(
-  selectMoviesResult,
-  moviesResult => moviesResult ?? []
-)
-
-export default store
+export const wrapper = createWrapper<Store<AppStore>>(makeStore, { debug: true })

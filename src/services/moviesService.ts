@@ -1,8 +1,14 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { MovieResponse } from '../models/interfaces'
+import { HYDRATE } from 'next-redux-wrapper'
 
 export const apiSlice = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:4000' }),
+  extractRehydrationInfo (action, { reducerPath }) {
+    if (action.type === HYDRATE) {
+      return action.payload[reducerPath]
+    }
+  },
   tagTypes: ['Movies'],
   endpoints: (build) => ({
     getMovies: build.query<MovieResponse[], { sortBy: string, filter: string, search: string }>({

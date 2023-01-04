@@ -1,14 +1,12 @@
 import React, { ReactElement, useEffect, useState, KeyboardEvent } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useRouter } from 'next/router'
 
 export default function Search ({ query }: { query: string }): ReactElement {
+  const router = useRouter()
   const [searchValue, setSearchValue] = useState('')
-  const navigate = useNavigate()
 
   const search = (): void => {
-    navigate({
-      pathname: `/search${searchValue !== '' ? `/${searchValue}` : ''}`
-    })
+    void router.push(`/search${searchValue !== '' ? `/${searchValue}` : ''}`)
   }
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>): void => {

@@ -1,21 +1,18 @@
 import React, { ReactElement, useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useRouter } from 'next/router'
 
 export default function MovieContros ({ genres, selected, count, sortSelected }: { genres: string[], selected: string, count: number, sortSelected: string }): ReactElement {
+  const router = useRouter()
   const sortOpts = ['Release Date', 'Rating', 'Popular']
   const [selectedGenre, setSelectedGenre] = useState(genres[0])
   const [openBox, setOpenBox] = useState(false)
   const [selectedSort, setSelectedSort] = useState(sortOpts[0])
   const [selectedSortDisplay, setSelectedSortDisplay] = useState('')
-  const navigate = useNavigate()
-  const location = useLocation()
 
   const goTo = (search: string): void => {
-    navigate({
-      pathname: location.pathname,
-      search
-    })
+    const basePath = router.asPath.split('?')[0]
+    void router.push(`${basePath}${search}`)
   }
 
   const handleClick = (selected: string): void => {

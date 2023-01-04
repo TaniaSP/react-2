@@ -1,6 +1,6 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import Link from 'next/link'
 
 export default function Logo (): JSX.Element {
-  return (<Link to='/'><span className='logo'><b>netflix</b>roulette</span></Link>)
+  return (<Link href='/'><span className='logo'><b>netflix</b>roulette</span></Link>)
 }
