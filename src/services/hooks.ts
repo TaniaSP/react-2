@@ -5,7 +5,7 @@ export default function useComponentVisible (initialIsVisible: boolean): { ref: 
   const ref = useRef<any>(null)
 
   const handleClickOutside = (event: MouseEvent): void => {
-    if (ref.current !== undefined && ref.current.contains(event.target) === false) {
+    if ((ref.current !== null && ref.current !== undefined) && ref.current.contains(event.target) === false) {
       setIsComponentVisible(false)
     } else {
       setIsComponentVisible(true)
