@@ -1148,7 +1148,9 @@ function HomePage() {
   }, /*#__PURE__*/external_react_default().createElement((head_default()), null, /*#__PURE__*/external_react_default().createElement("title", null, "Tania React App"), /*#__PURE__*/external_react_default().createElement("meta", {
     name: "description",
     content: "Tania React App"
-  })), /*#__PURE__*/external_react_default().createElement(movieContext.Provider, {
+  })), /*#__PURE__*/external_react_default().createElement("h1", {
+    className: "text-3xl font-bold underline"
+  }, "Tailwind test!"), /*#__PURE__*/external_react_default().createElement(movieContext.Provider, {
     value: {
       clickMovie: clickMovie,
       setClickedMovie: setClickedMovie

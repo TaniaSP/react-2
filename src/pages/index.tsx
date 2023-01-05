@@ -120,6 +120,9 @@ function HomePage (): ReactElement {
           <title>Tania React App</title>
           <meta name="description" content="Tania React App" />
         </Head>
+        <h1 className="text-3xl font-bold underline">
+          Tailwind test!
+        </h1>
         <movieContext.Provider value={{ clickMovie, setClickedMovie }}>
           {openConfirmBox && <DeleteMovie onConfirm={onConfirm} onClose={onClose} />}
           {openEditBox && <EditMovie movie={selectedMovie} isEdit={isEditMovie} onClose={onClose} />}
@@ -133,7 +136,7 @@ function HomePage (): ReactElement {
           </div>
         </movieContext.Provider>
         <div className="main-content">
-          <MovieControls count={movies?.length} genres={genres} selected={filter} sortSelected={sortBy} />
+           <MovieControls count={movies?.length} genres={genres} selected={filter} sortSelected={sortBy} />
           <div className='movie-tiles'>
             {
               movies?.map(movie => <ErrorBoundary key={movie.id} ><Movie key={movie.id} movie={movie} editMovie={() => editMovie(movie)} deleteMovie={() => deleteMovie(movie)} /></ErrorBoundary>)
