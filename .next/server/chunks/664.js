@@ -132,7 +132,15 @@ exports.addLocale = void 0;
 var _normalizeTrailingSlash = __webpack_require__(4979);
 
 var addLocale = function addLocale(path) {
-  if (false) { var _len, args, _key, _require; }
+  if (true) {
+    var _require;
+
+    for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+      args[_key - 1] = arguments[_key];
+    }
+
+    return (0, _normalizeTrailingSlash).normalizePathTrailingSlash((_require = __webpack_require__(3431)).addLocale.apply(_require, [path].concat(args)));
+  }
 
   return path;
 };
@@ -150,7 +158,7 @@ if ((typeof exports["default"] === 'function' || _typeof(exports["default"]) ===
 /***/ }),
 
 /***/ 6426:
-/***/ ((module, exports) => {
+/***/ ((module, exports, __webpack_require__) => {
 
 "use strict";
 
@@ -163,7 +171,11 @@ Object.defineProperty(exports, "__esModule", ({
 exports.detectDomainLocale = void 0;
 
 var detectDomainLocale = function detectDomainLocale() {
-  if (false) { var _require; }
+  if (true) {
+    var _require;
+
+    return (_require = __webpack_require__(3539)).detectDomainLocale.apply(_require, arguments);
+  }
 };
 
 exports.detectDomainLocale = detectDomainLocale;
@@ -179,7 +191,7 @@ if ((typeof exports["default"] === 'function' || _typeof(exports["default"]) ===
 /***/ }),
 
 /***/ 5235:
-/***/ ((module, exports) => {
+/***/ ((module, exports, __webpack_require__) => {
 
 "use strict";
 
@@ -190,12 +202,25 @@ Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
 exports.getDomainLocale = getDomainLocale;
-var basePath = (/* unused pure expression or super */ null && ( false || ''));
+var basePath =  false || '';
 
 function getDomainLocale(path, locale, locales, domainLocales) {
-  if (false) { var finalLocale, proto, domain, target, detectDomainLocale, normalizeLocalePath; } else {
+  if (true) {
+    var normalizeLocalePath = (__webpack_require__(4007).normalizeLocalePath);
+
+    var detectDomainLocale = (__webpack_require__(6426).detectDomainLocale);
+
+    var target = locale || normalizeLocalePath(path, locales).detectedLocale;
+    var domain = detectDomainLocale(domainLocales, undefined, target);
+
+    if (domain) {
+      var proto = "http".concat(domain.http ? '' : 's', "://");
+      var finalLocale = target === domain.defaultLocale ? '' : "/".concat(target);
+      return "".concat(proto).concat(domain.domain).concat(basePath).concat(finalLocale).concat(path);
+    }
+
     return false;
-  }
+  } else {}
 }
 
 if ((typeof exports["default"] === 'function' || _typeof(exports["default"]) === 'object' && exports["default"] !== null) && typeof exports["default"].__esModule === 'undefined') {
@@ -752,6 +777,42 @@ if ((typeof exports["default"] === 'function' || _typeof(exports["default"]) ===
 
 /***/ }),
 
+/***/ 4007:
+/***/ ((module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.normalizeLocalePath = void 0;
+
+var normalizeLocalePath = function normalizeLocalePath(pathname, locales) {
+  if (true) {
+    return (__webpack_require__(4014).normalizeLocalePath)(pathname, locales);
+  }
+
+  return {
+    pathname: pathname,
+    detectedLocale: undefined
+  };
+};
+
+exports.normalizeLocalePath = normalizeLocalePath;
+
+if ((typeof exports["default"] === 'function' || _typeof(exports["default"]) === 'object' && exports["default"] !== null) && typeof exports["default"].__esModule === 'undefined') {
+  Object.defineProperty(exports["default"], '__esModule', {
+    value: true
+  });
+  Object.assign(exports["default"], exports);
+  module.exports = exports["default"];
+}
+
+/***/ }),
+
 /***/ 4979:
 /***/ ((module, exports, __webpack_require__) => {
 
@@ -847,7 +908,14 @@ exports.removeLocale = removeLocale;
 var _parsePath = __webpack_require__(8854);
 
 function removeLocale(path, locale) {
-  if (false) { var localeLower, pathLower, _parsePath2, pathname; }
+  if (true) {
+    var _parsePath2 = (0, _parsePath).parsePath(path),
+        pathname = _parsePath2.pathname;
+
+    var pathLower = pathname.toLowerCase();
+    var localeLower = locale == null ? void 0 : locale.toLowerCase();
+    return locale && (pathLower.startsWith("/".concat(localeLower, "/")) || pathLower === "/".concat(localeLower)) ? "".concat(pathname.length === locale.length + 1 ? "/" : "").concat(path.slice(locale.length + 1)) : path;
+  }
 
   return path;
 }
@@ -2675,7 +2743,12 @@ var Router = /*#__PURE__*/function () {
     this.isLocaleDomain = false;
     this.isReady = !!(self.__NEXT_DATA__.gssp || self.__NEXT_DATA__.gip || self.__NEXT_DATA__.appGip && !self.__NEXT_DATA__.gsp || !autoExportDynamic && !self.location.search && !true);
 
-    if (false) {}
+    if (true) {
+      this.locales = locales;
+      this.defaultLocale = defaultLocale;
+      this.domainLocales = domainLocales;
+      this.isLocaleDomain = !!(0, _detectDomainLocale).detectDomainLocale(domainLocales, self.location.hostname);
+    }
 
     this.state = {
       route: route,
@@ -2683,7 +2756,7 @@ var Router = /*#__PURE__*/function () {
       query: query1,
       asPath: autoExportDynamic ? pathname1 : as1,
       isPreview: !!isPreview,
-      locale:  false ? 0 : undefined,
+      locale:  true ? locale : 0,
       isFallback: isFallback
     };
     this._initialMatchesMiddlewarePromise = Promise.resolve(false);
@@ -2805,10 +2878,7 @@ var Router = /*#__PURE__*/function () {
               case 12:
                 prevLocale = nextState.locale;
 
-                if (true) {
-                  _context3.next = 25;
-                  break;
-                }
+                if (false) {}
 
                 nextState.locale = options.locale === false ? _this.defaultLocale : options.locale || nextState.locale;
 
@@ -2829,12 +2899,37 @@ var Router = /*#__PURE__*/function () {
                 didNavigate = false; // we need to wrap this in the env check again since regenerator runtime
                 // moves this on its own due to the return
 
-                if (false) {}
+                if (true) {
+                  // if the locale isn't configured hard navigate to show 404 page
+                  if (!((ref = _this.locales) == null ? void 0 : ref.includes(nextState.locale))) {
+                    parsedAs.pathname = (0, _addLocale).addLocale(parsedAs.pathname, nextState.locale);
+                    handleHardNavigation({
+                      url: (0, _formatUrl).formatWithValidation(parsedAs),
+                      router: _this
+                    }); // this was previously a return but was removed in favor
+                    // of better dead code elimination with regenerator runtime
+
+                    didNavigate = true;
+                  }
+                }
 
                 detectedDomain = (0, _detectDomainLocale).detectDomainLocale(_this.domainLocales, undefined, nextState.locale); // we need to wrap this in the env check again since regenerator runtime
                 // moves this on its own due to the return
 
-                if (false) {}
+                if (true) {
+                  // if we are navigating to a domain locale ensure we redirect to the
+                  // correct domain
+                  if (!didNavigate && detectedDomain && _this.isLocaleDomain && self.location.hostname !== detectedDomain.domain) {
+                    asNoBasePath = (0, _removeBasePath).removeBasePath(as);
+                    handleHardNavigation({
+                      url: "http".concat(detectedDomain.http ? '' : 's', "://").concat(detectedDomain.domain).concat((0, _addBasePath).addBasePath("".concat(nextState.locale === detectedDomain.defaultLocale ? '' : "/".concat(nextState.locale)).concat(asNoBasePath === '/' ? '' : asNoBasePath) || '/')),
+                      router: _this
+                    }); // this was previously a return but was removed in favor
+                    // of better dead code elimination with regenerator runtime
+
+                    didNavigate = true;
+                  }
+                }
 
                 if (!didNavigate) {
                   _context3.next = 25;
@@ -3162,7 +3257,11 @@ var Router = /*#__PURE__*/function () {
                       rewriteAs = (0, _removeBasePath).removeBasePath(rewriteAs);
                     }
 
-                    if (false) {}
+                    if (true) {
+                      localeResult = (0, _normalizeLocalePath).normalizeLocalePath(rewriteAs, _this.locales);
+                      nextState.locale = localeResult.detectedLocale || nextState.locale;
+                      rewriteAs = localeResult.pathname;
+                    }
 
                     _routeRegex2 = (0, _routeRegex).getRouteRegex(pathname);
                     curRouteMatch = (0, _routeMatcher).getRouteMatcher(_routeRegex2)(new URL(rewriteAs, location.href).pathname);
@@ -3421,7 +3520,11 @@ var Router = /*#__PURE__*/function () {
                 throw routeInfo.error;
 
               case 197:
-                if (false) {}
+                if (true) {
+                  if (nextState.locale) {
+                    document.documentElement.lang = nextState.locale;
+                  }
+                }
 
                 if (!isQueryUpdating) {
                   Router.events.emit('routeChangeComplete', as, routeProps);
@@ -4052,7 +4155,18 @@ var Router = /*#__PURE__*/function () {
                 pathname = parsed.pathname, query = parsed.query;
                 originalPathname = pathname;
 
-                if (false) {}
+                if (true) {
+                  if (options.locale === false) {
+                    pathname = (0, _normalizeLocalePath).normalizeLocalePath(pathname, _this.locales).pathname;
+                    parsed.pathname = pathname;
+                    url = (0, _formatUrl).formatWithValidation(parsed);
+                    parsedAs = (0, _parseRelativeUrl).parseRelativeUrl(asPath);
+                    localePathResult = (0, _normalizeLocalePath).normalizeLocalePath(parsedAs.pathname, _this.locales);
+                    parsedAs.pathname = localePathResult.pathname;
+                    options.locale = localePathResult.detectedLocale || _this.defaultLocale;
+                    asPath = (0, _formatUrl).formatWithValidation(parsedAs);
+                  }
+                }
 
                 _context7.next = 10;
                 return _this.pageLoader.getPageList();

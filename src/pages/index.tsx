@@ -14,6 +14,7 @@ import { MovieResponse } from '../models/interfaces'
 import { EmptyMovie, genres } from '../models/mocks'
 import { useSearchParams } from 'next/navigation'
 import { useRouter } from 'next/router'
+import Head from 'next/head'
 
 import { apiSlice, useDeleteMovieMutation, useGetMoviesQuery } from '../services/moviesService'
 import { wrapper } from '../store/store'
@@ -115,6 +116,13 @@ function HomePage (): ReactElement {
   return (
     <>
       <div className='main'>
+        <Head>
+          <title>Tania React App</title>
+          <meta name="description" content="Tania React App" />
+        </Head>
+        <h1 className="text-3xl font-bold underline">
+          Tailwind test!
+        </h1>
         <movieContext.Provider value={{ clickMovie, setClickedMovie }}>
           {openConfirmBox && <DeleteMovie onConfirm={onConfirm} onClose={onClose} />}
           {openEditBox && <EditMovie movie={selectedMovie} isEdit={isEditMovie} onClose={onClose} />}
@@ -128,7 +136,7 @@ function HomePage (): ReactElement {
           </div>
         </movieContext.Provider>
         <div className="main-content">
-          <MovieControls count={movies?.length} genres={genres} selected={filter} sortSelected={sortBy} />
+           <MovieControls count={movies?.length} genres={genres} selected={filter} sortSelected={sortBy} />
           <div className='movie-tiles'>
             {
               movies?.map(movie => <ErrorBoundary key={movie.id} ><Movie key={movie.id} movie={movie} editMovie={() => editMovie(movie)} deleteMovie={() => deleteMovie(movie)} /></ErrorBoundary>)
